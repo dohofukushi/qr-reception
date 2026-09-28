@@ -6,7 +6,8 @@
 
 <title>QR受付システム</title>
 
-<script src="https://unpkg.com/html5-qrcodeqrcode.min.jsscriptml5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+
 <style>
 body{
   font-family:sans-serif;
@@ -26,8 +27,8 @@ body{
   font-weight:bold;
 }
 </style>
-</head>
 
+</head>
 <body>
 
 <h1>QRコードをかざしてください</h1>
@@ -37,12 +38,9 @@ body{
 <div id="status">起動中...</div>
 
 <script>
-
 function onScanSuccess(decodedText){
-
   document.getElementById("status").innerHTML =
     "読取成功<br>" + decodedText;
-
 }
 
 const html5QrCode = new Html5Qrcode("reader");
@@ -54,8 +52,7 @@ html5QrCode.start(
     qrbox: 250
   },
   onScanSuccess
-)
-.catch(err => {
+).catch(err => {
 
   document.getElementById("status").innerHTML =
     "カメラ起動失敗";
@@ -63,7 +60,6 @@ html5QrCode.start(
   console.error(err);
 
 });
-
 </script>
 
 </body>
