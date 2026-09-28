@@ -41,7 +41,7 @@ body{
 
 let busy = false;
 
-function resetScreen(){
+function resetScreen() {
 
   document.getElementById("status").innerHTML =
     "QRコードをかざしてください";
@@ -62,32 +62,28 @@ function onScanSuccess(decodedText){
     method:"GET",
     mode:"no-cors"
   })
-  .then(() => {
+  .finally(() => {
 
     document.getElementById("status").innerHTML =
-      "✅ 受付完了";
+      "✅受付完了";
 
-    setTimeout(resetScreen,3000);
+    setTimeout(() => {
 
-  })
-  .catch(() => {
+      resetScreen();
 
-    document.getElementById("status").innerHTML =
-      "❌ エラー";
-
-    setTimeout(resetScreen,3000);
+    },3000);
 
   });
 
 }
 
-const html5QrCode = new Html5Qrcode("reader");
+const scanner = new Html5Qrcode("reader");
 
-html5QrCode.start(
+scanner.start(
   { facingMode: "environment" },
   {
-    fps: 20,
-    qrbox: 350
+    fps:20,
+    qrbox:350
   },
   onScanSuccess
 );
