@@ -6,7 +6,7 @@
 
 <title>QR受付システム</title>
 
-<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="https://unpkg.com/html5-qrcode@2.3.8/htmljsscript>
 
 <style>
 body{
@@ -23,7 +23,7 @@ body{
 
 #status{
   margin-top:20px;
-  font-size:30px;
+  font-size:40px;
   font-weight:bold;
 }
 </style>
@@ -35,35 +35,59 @@ body{
 
 <div id="reader"></div>
 
-<div id="status">起動中...</div>
+<div id="status">待機中...</div>
 
 <script>
 
-function onScanSuccess(decodedText){
+let busy = false;
+
+function resetScreen() {
 
   document.getElementById("status").innerHTML =
-    "読取成功<br>" + decodedText;
+    "QRコードをかざしてください";
+
+  busy = false;
+
+}
+
+function onScanSuccess(decodedText){
+
+  if(busy) return;
+
+  busy = true;
+
+  document.getElementById("status").innerHTML =
+    "受付処理中...";
+
+  fetch(decodedText,{
+    method:"GET",
+    mode:"no-cors"
+  })
+  .finally(() => {
+
+    document.getElementById("status").innerHTML =
+      "✅受付完了";
+
+    setTimeout(() => {
+
+      resetScreen();
+
+    },3000);
+
+  });
 
 }
 
 const html5QrCode = new Html5Qrcode("reader");
 
 html5QrCode.start(
-  { facingMode: "environment" },
+  { facingMode:"environment" },
   {
-    fps: 10,
-    qrbox: 250
+    fps:10,
+    qrbox:250
   },
   onScanSuccess
-)
-.catch(err => {
-
-  document.getElementById("status").innerHTML =
-    "カメラ起動失敗";
-
-  console.error(err);
-
-});
+);
 
 </script>
 
