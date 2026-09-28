@@ -2,14 +2,61 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>QR受付テスト</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QR受付システム</title>
+
+<style>
+body{
+  font-family:sans-serif;
+  text-align:center;
+  background:#f5f5f5;
+}
+
+video{
+  width:90%;
+  max-width:600px;
+  border:2px solid #333;
+}
+
+#status{
+  font-size:36px;
+  font-weight:bold;
+  margin-top:20px;
+}
+</style>
 </head>
 
 <body>
 
-<h1>QR受付テスト</h1>
+<h1>QRコードをかざしてください</h1>
 
-<p>次はQR読取機能を追加します</p>
+<video id="video" autoplay playsinline></video>
+
+<div id="status">カメラ起動中...</div>
+
+<script>
+async function startCamera() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video:{ facingMode:"environment" }
+    });
+
+    document.getElementById("video").srcObject = stream;
+
+    document.getElementById("status").innerHTML =
+      "カメラ起動成功";
+
+  } catch(err) {
+
+    document.getElementById("status").innerHTML =
+      "カメラ起動失敗";
+
+    console.error(err);
+  }
+}
+
+startCamera();
+</script>
 
 </body>
 </html>
